@@ -68,9 +68,9 @@ class TokenSelector():
     def set_params(self, params):
 
         params_key = ["dict_word", "dict_syll", "freq_word", "freq_syll", "words", "syllables"]
-        for param, value in params:
-            if param not in params_key:
-                raise (KeyError, "params doesn't contain {}".format(param))
+        for param in params_key:
+            if param not in params.keys():
+                raise KeyError("params doesn't contain {}".format(param))
 
         self.dict_word = params["dict_word"]
         self.dict_syll = params["dict_syll"]
@@ -145,7 +145,14 @@ class TokenSelector():
                   "freq_word":self.freq_word,
                   "freq_syll":self.freq_syll,
                   "words":list(self.words),
-                  "syllables": list(self.syllables)
+                  "syllables": list(self.syllables),
+                  "final_char": self.final_char,
+                  "inter_char": self.inter_char,
+                  "sign_not_syllable": self.sign_not_syllable,
+                  "words_to_ignore":self.words_to_ignore,
+                  "signs_to_ignore": self.signs_to_ignore,
+                  "letters": list(self.letters),
+                  "map_punctuation": self.map_punctuation
                   }
         return params
 
