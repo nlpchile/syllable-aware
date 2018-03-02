@@ -1,6 +1,5 @@
 import keras
 
-
 class RecurrentLSTM:
 
     def __init__(self,

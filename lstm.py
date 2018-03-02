@@ -1,17 +1,9 @@
 # coding: utf-8
 
-## Imports
-import time
 import os
+
 import numpy as np
 import random
-
-from src.RNN import RecurrentLSTM
-from src.Tokenization import Tokenization
-from src.utils import preprocessing_file
-from src.perplexity import metric_pp
-from src.Generators import GeneralGenerator
-from src.Callbacks import Callbacks
 
 ########################################################################################################################
 ## Setting Seed for Reproducibility
@@ -54,7 +46,18 @@ if K.backend() == 'tensorflow':
 
 
 ########################################################################################################################
+# IMPORTS
 
+import time
+from src.RNN import RecurrentLSTM
+from src.Tokenization import Tokenization
+from src.utils import preprocessing_file
+from src.perplexity import metric_pp
+from src.Generators import GeneralGenerator
+from src.Callbacks import Callbacks
+
+
+########################################################################################################################
 ## Path to File
 
 #path_in = './data/horoscopo_test_overfitting.txt'

@@ -28,7 +28,7 @@
 
 * RNN.py
 
-* Generators.py
+* **[Verified]** Generators.py  (**[Thread Safe]**)
 
 
 ### Crear archivo requirements.txt
@@ -45,7 +45,7 @@
 
 ### Clase Generators
 
-* Verificar que clase Generators se ajusta al uso de L y Lprima
+* **[Done]** Verificar que clase Generators se ajusta al uso de L y Lprima
 
 
 ---
