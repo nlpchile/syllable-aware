@@ -1,15 +1,7 @@
-from src.RNN import RecurrentLSTM
-from src.Tokenization import Tokenization
-from src.utils import preprocessing_file
-from src.perplexity import metric_pp
-from src.Generators import GeneralGenerator
-from src.Callbacks import Callbacks
-
-import time
 import os
+
 import numpy as np
 import random
-import json
 
 from keras import backend as K
 
@@ -18,18 +10,31 @@ seed = 1 # must be the same as PYTHONHASHSEED
 np.random.seed(seed)
 random.seed(seed)
 
+
 if K.backend() == 'tensorflow':
     import tensorflow as tf
 
     config = tf.ConfigProto()
 
     # Don't pre-allocate memory; allocate as-needed
-    config.gpu_options.allow_growth = True
+    config.gpu_options.allow_growth = True # https://www.tensorflow.org/programmers_guide/using_gpu#allowing_gpu_memory_growth
 
     sess = tf.Session(config=config)
 
     tf.set_random_seed(seed)
     K.set_session(sess)
+
+import time
+import json
+
+from src.RNN import RecurrentLSTM
+from src.Tokenization import Tokenization
+from src.utils import preprocessing_file
+from src.perplexity import metric_pp
+from src.Generators import GeneralGenerator
+from src.Callbacks import Callbacks
+
+########################################################################################################################
 
 path_in = './data/train.txt'
 path_out = './data/train2.txt'
