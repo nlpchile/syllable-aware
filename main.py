@@ -29,15 +29,13 @@ import json
 
 from src.RNN import RecurrentLSTM
 from src.Tokenization import Tokenization
-from src.utils import preprocessing_file
 from src.perplexity import metric_pp
 from src.Generators import GeneralGenerator
 from src.Callbacks import Callbacks
 
 ########################################################################################################################
 
-path_in = './data/train.txt'
-path_out = './data/train2.txt'
+path_to_file = './data/train1000.txt'
 
 out_directory_train_history = '../train_history/'
 out_directory_model = '../models/'
@@ -66,11 +64,6 @@ else:
 
 
 def main():
-
-    ## Preprocessing Corpus
-    print('=' * 50)
-    print('Preprocessing Corpus')
-
     to_ignore = '''¡!()[]{}\"\'0123456789…-=@+*\t%&//­\xc2'''
     signs_to_ignore = [i for i in to_ignore]
 
@@ -84,45 +77,32 @@ def main():
                        ';': '<sc>'
                        }
 
-    # Agregué caracteres con acentos hacia atrás y con dos
-    # puntos para las palabras en frances y alemán
-    letters = 'aáeéoóíúiuübcdfghjklmnñopqrstvwxyzàèìòùäëïö'
+    letters = 'aáeéoóíúiuübcdfghjklmnñopqrstvwxyz'
 
-    add_space = True
-
-    if add_space:
-        preprocessing_file(path_in=path_in,
-                           path_out=path_out,
-                           to_ignore=to_ignore
-                           )
-
-    path_to_file = path_out
-
-    # Parameters LSTM
+    ## Hyperparameters
     D = 512
 
     recurrent_dropout = 0
     dropout = 0
 
     if K.backend() == 'tensorflow':
-        recurrent_dropout = 0.3
-        dropout = 0.3
+        recurrent_dropout = 0 #0.3
+        dropout = 0 #0.3
 
     dropout_seed = 1
 
     train_size = 0.8  # 1
     batch_size = 512
-    epochs = 100
+    epochs = 10
+
+    patience = 10  # number of epochs with no improvement after which training will be stopped
 
     optimizer = 'rmsprop'  # 'adam'
     metrics = ['top_k_categorical_accuracy', 'categorical_accuracy']
 
     workers = 16  # default 1
 
-
-    ## Hyperparameters
-
-    train_size = 0.8
+    ####
 
     random_split = False
     token_split = '<nl>'
@@ -230,6 +210,7 @@ def main():
               )
 
         ## Init Model
+        ti_model = time.time()
         print('=' * 50)
         print('Init Model')
         model = RecurrentLSTM(vocab_size=len(params_tokenization["vocabulary"]),
@@ -280,7 +261,6 @@ def main():
                              save_best_only=save_best_only)
 
         monitor_early_stopping = 'val_top_k_categorical_accuracy'  # 'val_loss'
-        patience = 5  # number of epochs with no improvement after which training will be stopped
 
         callbacks.early_stopping(monitor=monitor_early_stopping,
                                  patience=patience)
@@ -314,7 +294,9 @@ def main():
 
         tf = time.time()
         dt = (tf - ti) / 60.0
-        print('Elapsed Time {}'.format(dt))
+        dt_model = (tf-ti_model) / 60
+        print('Elapsed Time {} during training using {} backend'.format(dt, K.backend()))
+        print('Elapsed Time {} using {} backend'.format(dt_model, K.backend()))
 
         print("Model was trained :)\n")
 
