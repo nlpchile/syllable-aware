@@ -132,7 +132,7 @@ def main():
 
     T_W = [0, 30, 60, 100, 300, 600, 1000, 3000, 6000]
 
-    Tmax = 500 # Maximum number of Tokens (without considering characters)
+    Tmax = 1000 # Maximum number of Tokens (without considering characters)
 
     for tw in T_W:
 
