@@ -106,6 +106,8 @@ class TokenSelector():
                             for c in self.dict_syll[s]:
                                 if c[0] in self.letters:
                                     tokens_selected.append(c)
+        else:
+            print("Warning, token '{}' was ignored".format(token))
 
         return tokens_selected
 

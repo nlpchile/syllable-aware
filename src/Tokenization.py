@@ -86,7 +86,7 @@ class Tokenization:
         params = self.tokenSelector.params()
 
         if os.path.exists(path=path_to_file):
-            Warning(FileExistsError, "Warning path exists, '{}'".format(path_to_file))
+            print("Warning, file exists '{}'".format(path_to_file))
 
         with open(path_to_file, "w") as f:
             json.dump(params, f)
@@ -181,7 +181,7 @@ class Tokenization:
         params = self.params_experiment()
 
         if os.path.exists(path=path_to_file):
-            Warning("Warning path exists, '{}'".format(path_to_file))
+            print("Warning path exists, '{}'".format(path_to_file))
 
         with open(path_to_file, "w") as f:
             json.dump(params, f)

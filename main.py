@@ -5,13 +5,14 @@ import random
 
 from keras import backend as K
 
+backend_ = K.backend()
 os.environ['PYTHONHASHSEED'] = '1' # https://github.com/fchollet/keras/issues/850
 seed = 1 # must be the same as PYTHONHASHSEED
 np.random.seed(seed)
 random.seed(seed)
 
 
-if K.backend() == 'tensorflow':
+if backend_ == 'tensorflow':
     import tensorflow as tf
 
     config = tf.ConfigProto()
@@ -35,6 +36,7 @@ from src.Callbacks import Callbacks
 
 ########################################################################################################################
 
+file_name = 'train1000_'
 path_to_file = './data/train1000.txt'
 
 out_directory_train_history = '../train_history/'
@@ -85,15 +87,15 @@ def main():
     recurrent_dropout = 0
     dropout = 0
 
-    if K.backend() == 'tensorflow':
-        recurrent_dropout = 0 #0.3
-        dropout = 0 #0.3
+    if backend_ == 'tensorflow':
+        recurrent_dropout = 0.3
+        dropout = 0.3
 
     dropout_seed = 1
 
     train_size = 0.8  # 1
     batch_size = 512
-    epochs = 10
+    epochs = 100
 
     patience = 10  # number of epochs with no improvement after which training will be stopped
 
@@ -139,20 +141,24 @@ def main():
         quantity_word = tw
         quantity_syllable = Tmax -tw
 
-        ## Config .env file
-
-        keyfile = json.load(open('.env'))
-        tag = "syllable-aware " + path_to_file + " experiment T = {} ; Tw = {} ; Ts = {}"
-        keyfile["losswise_tag"] = tag.format(Tmax, quantity_word, quantity_syllable)
-
-        with open(".env", "w") as f:
-            json.dump(keyfile, f)
-
         ## Tokenization
         print('Selecting Tokens ...')
         tokenization.setting_tokenSelector_params(quantity_word=quantity_word,
                                                   quantity_syllable=quantity_syllable
                                                   )
+
+        ## Quantity of words and syllables efectives
+        quantity_word = len(tokenization.tokenSelector.words)
+        quantity_syllable = len(tokenization.tokenSelector.syllables)
+
+
+        ## Config .env file
+        keyfile = json.load(open('.env'))
+        tag = "syllable-aware " + path_to_file + " experiment T = {} ; Tw = {} ; Ts = {}" + backend_
+        keyfile["losswise_tag"] = tag.format(Tmax, quantity_word, quantity_syllable)
+
+        with open(".env", "w") as f:
+            json.dump(keyfile, f)
 
         print('Corpus to Process : {}'.format(path_to_file))
         print('Vocabulary Word Size = {} \nVocabulary Syllables Size = {}\nsequence length = {}'.format(
@@ -174,10 +180,12 @@ def main():
 
         target_experiment = "experimentT{}Tw{}Ts{}".format(Tmax, quantity_word, quantity_syllable)
 
-        path_setting_experiment = out_directory_model + "experiment/" + target_experiment + "_setting_tokenize.txt"
+        path_setting_experiment = out_directory_model + "experiment/" + file_name +\
+                                  target_experiment + "_setting_tokenize.txt"
         tokenization.save_experiment(path_setting_experiment)
 
-        path_setting_tokenSelector = out_directory_model + "experiment/" + target_experiment + "_setting_tokenSelector.txt"
+        path_setting_tokenSelector = out_directory_model + "experiment/" + file_name +\
+                                     target_experiment + "_setting_tokenSelector.txt"
         tokenization.save_tokenSelector(path_setting_tokenSelector)
 
         print("average tokens per words = {}".format(params_tokenization["average_tpw"]))
@@ -249,7 +257,7 @@ def main():
 
         time_pref = time.strftime('%y%m%d.%H%M')  # Ver código de Jorge Perez
 
-        outfile = out_model_pref + target_experiment + time_pref +"_{loss:.2f}_{val_loss:.2f}" + ".h5"
+        outfile = out_model_pref + file_name + target_experiment + time_pref +"_{loss:.2f}_{val_loss:.2f}_{epoch:02d}.h5"
 
         callbacks = Callbacks()
 
