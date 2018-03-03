@@ -1,4 +1,6 @@
 import keras
+import pickle
+import os
 
 class RecurrentLSTM:
 
@@ -89,7 +91,7 @@ class RecurrentLSTM:
         self.callbacks = callbacks
 
         # https://keras.io/models/sequential/#fit_generator
-        self.model_output = self.model.fit_generator(generator=self.train_generator,
+        self.model_history = self.model.fit_generator(generator=self.train_generator,
                                                      steps_per_epoch=self.steps_per_epoch,
                                                      epochs=self.epochs,
                                                      verbose=2,
@@ -126,5 +128,8 @@ class RecurrentLSTM:
 
         return self.to_json()
     
-    def save(self, path_to_file):
-        self.model.save(path_to_file)
+    def save_history(self, path_to_file):
+        if os.path.exists(path=path_to_file):
+            print("Warning path exists, '{}'".format(path_to_file))
+        with open(path_to_file, "wb") as f1:
+            pickle.dump(self.model_history, f1)

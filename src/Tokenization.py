@@ -102,6 +102,9 @@ class Tokenization:
         self.tokenSelector.set_params(params)
         return params
 
+    def set_tokenSelector(self, tokenSelector):
+        self.tokenSelector = tokenSelector
+
     def select_tokens(self, path_to_file=None):
 
         path_to_file = path_to_file if path_to_file != None else self.path_to_file
@@ -147,11 +150,12 @@ class Tokenization:
 
         params_key = ["tokensplit", "quantity_word", "quantity_syll", "lprime",
                       "vocabulary", "token_to_index", "index_to_token", "index_ends",
-                      "average_tpw"]
-        for param, value in params:
+                      "average_tpw", "final_punc"]
+        for param, value in params.items():
             if param not in params_key:
                 raise KeyError("params doesn't contain {}".format(param))
 
+        self.final_punc = params["final_punc"]
         self.tokensplit = params["tokensplit"]
         self.quantity_word = params["quantity_word"]
         self.quantity_syll = params["quantity_syll"]
@@ -173,6 +177,7 @@ class Tokenization:
                   "index_to_token": self.index_to_token,
                   "index_ends": self.index_ends,
                   "average_tpw": self.average_tpw,
+                  "final_punc": self.final_punc
                   }
         return params
 

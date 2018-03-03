@@ -35,14 +35,14 @@ class CheckModel():
         self.tokenSelector.set_params(self.tokenSelector_params)
 
         self.map_punctuation_inv = dict()
-        for key, value in self.tokenSelector_params["map_punctuation"]:
+        for key, value in self.tokenSelector_params["map_punctuation"].items():
             self.map_punctuation_inv[value] = key
 
     def predict_word(self, sentence, temperature):
 
-        next_token = ""
+        next_index = -1
         generated = []
-        while next_token not in self.tokenSelector_params["index_ends"]:
+        while next_index not in self.tokenization_params["index_ends"]:
             x_pred = np.zeros((1, self.tokenization_params["lprime"]))
             for t, token in enumerate(sentence):
                 x_pred[0, t] = self.tokenization_params["token_to_index"][token]
@@ -91,14 +91,17 @@ class CheckModel():
         for t, tk in enumerate(sentence):
             x_pred[0, t] = self.tokenization_params["token_to_index"][tk]
         preds = self.model.predict(x_pred, verbose=0)[0]
-
-        return preds[token]
+        preds = np.log(preds)
+        exp_preds = np.exp(preds)
+        preds = exp_preds / np.sum(exp_preds)
+        prob = preds[self.tokenization_params["token_to_index"][token] - 1]
+        return prob if prob > 0 else 1e-6
 
     def perplexity(self, path_to_test):
 
         tokenization = Tokenization(path_to_file=None,
                                     final_char=self.tokenSelector_params["final_char"],
-                                    final_punc=self.tokenSelector_params["final_punc"],
+                                    final_punc= self.tokenization_params["final_punc"],
                                     inter_char=self.tokenSelector_params["inter_char"],
                                     signs_to_ignore=self.tokenSelector_params["signs_to_ignore"],
                                     words_to_ignore=self.tokenSelector_params["words_to_ignore"],
@@ -107,6 +110,7 @@ class CheckModel():
                                     sign_not_syllable=self.tokenSelector_params["sign_not_syllable"],
                                     )
         tokenization.set_params_experiment(self.tokenization_params)
+        tokenization.set_tokenSelector(self.tokenSelector)
         max_len = self.tokenization_params["lprime"]
         test_selected = tokenization.select_tokens(path_to_test)
 
@@ -116,8 +120,8 @@ class CheckModel():
         qw = 0
 
         for i,token in enumerate(test_selected):
-            token_word += token
-            if token[-1] in [self.tokenSelector_params["final_char"], self.tokenSelector_params["final_punc"]]:
+            token_word += [token]
+            if token[-1] in [self.tokenSelector_params["final_char"], self.tokenization_params["final_punc"]]:
                 if len(sentence) < 1:
                     sentence += token_word
                     token_word = []
@@ -128,7 +132,7 @@ class CheckModel():
                 ## Calculo la probabilidad de la palabra
                 for tok in token_word:
                     probs_word *= self.get_probability_token(tok, seed)
-                    seed += [tok]
+                    seed = seed[1-max_len:] + [tok]
 
                 ## sumo la probabilidad a la del resto
                 ppl += np.log2(probs_word)
@@ -150,7 +154,6 @@ def sample(pred, temperature=1.0):
     exp_pred = np.exp(pred)
     pred = exp_pred / np.sum(exp_pred)
     prob = np.random.multinomial(1, pred, 1)
-
     return np.argmax(prob)
 
 

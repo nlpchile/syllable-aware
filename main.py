@@ -36,8 +36,8 @@ from src.Callbacks import Callbacks
 
 ########################################################################################################################
 
-file_name = 'train1000_'
-path_to_file = './data/train1000.txt'
+file_name = 'train2_'
+path_to_file = './data/train2.txt'
 
 out_directory_train_history = '../train_history/'
 out_directory_model = '../models/'
@@ -95,9 +95,9 @@ def main():
 
     train_size = 0.8  # 1
     batch_size = 512
-    epochs = 100
+    epochs = 30
 
-    patience = 10  # number of epochs with no improvement after which training will be stopped
+    patience = 5  # number of epochs with no improvement after which training will be stopped
 
     optimizer = 'rmsprop'  # 'adam'
     metrics = ['top_k_categorical_accuracy', 'categorical_accuracy']
@@ -130,7 +130,7 @@ def main():
     print('=' * 50)
     ##
 
-    T_W = [30, 60, 100, 300, 600, 1000, 3000, 6000]
+    T_W = [0, 30, 60, 100, 300, 600, 1000, 3000, 6000]
 
     Tmax = 500 # Maximum number of Tokens (without considering characters)
 
@@ -299,6 +299,8 @@ def main():
                   workers=workers,
                   use_multiprocessing= False
                   )
+
+        model.save_history(out_directory_train_history + target_experiment + "_" + backend_ + "_history.txt")
 
         tf = time.time()
         dt = (tf - ti) / 60.0
