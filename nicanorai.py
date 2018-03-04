@@ -55,7 +55,7 @@ from src.Callbacks import Callbacks
 ########################################################################################################################
 ## Path to File
 
-path_to_file = './data/nicanor2.txt'
+path_to_file = './data/nicanor_clear.txt'
 name = 'nicanor'
 
 
