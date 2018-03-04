@@ -16,11 +16,11 @@ if not args.ofile:
 
 path_in = args.ifile
 path_out = args.ofile
-to_ignore = '''¡!()[]{}\"\'0123456789…-=@+*\t%&//­\xc2'''
+to_ignore = '''¡!()[]{}\"\'0123456789…-=@+*\t%&//­\xc2.'''
 
 punctuation =  {'¿': '<ai>',
                 '?': '<ci>',
-                '.': '<pt>',
+                #'.': '<pt>',
                 '\n': '<nl>',
                 ',': '<cm>',
                 '<unk>': '<unk>',
