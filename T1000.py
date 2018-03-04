@@ -102,7 +102,7 @@ def main():
     optimizer = 'rmsprop'  # 'adam'
     metrics = ['top_k_categorical_accuracy', 'categorical_accuracy']
 
-    workers = 16  # default 1
+    workers = 2  # default 1
 
     ####
 
