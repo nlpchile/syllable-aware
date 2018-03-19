@@ -2,8 +2,6 @@ import numpy as np
 import random
 import threading
 
-# TODO: We must set a seed !!
-
 
 class threadsafe_iter:
     """Takes an iterator/generator and makes it thread-safe by
