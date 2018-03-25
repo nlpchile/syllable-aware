@@ -3,6 +3,7 @@ from src.CheckModel import CheckModel
 
 def main():
 
+    '''
     print("="*50)
     print("Loading files ...")
 
@@ -17,7 +18,7 @@ def main():
     print("computing perplexity per word using file '{}'".format(path_test))
     ppl = checkmodel.perplexity(path_test)
     print("perplexity per word was '{}'".format(ppl))
-
+    '''
 
 def other():
 
