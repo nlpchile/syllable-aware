@@ -32,16 +32,28 @@ def other():
     file = open('/home/nlp/experiments_IDs.txt', 'r')
     lines = file.readlines()
 
+    ##
+
+    file_1 = open('/home/nlp/file_1.txt', 'w')
+    file_2 = open('/home/nlp/file_2.txt', 'w')
+
     i = 0
 
     for line in lines:
 
         if i == 0:
-            print('file 1')
+
+            file_1.write(line)
+
             i += 1
+
         else:
-            print('file 2')
+
+            file_2.write(line)
+
             i -= 1
+
+    ##
 
 
 if __name__ == '__main__':
