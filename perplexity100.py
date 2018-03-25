@@ -20,7 +20,7 @@ def main():
     print("perplexity per word was '{}'".format(ppl))
     '''
 
-def other():
+def separate_files():
 
 
     # ls ~/ribanez/models >> ~/models_IDs.txt
@@ -34,8 +34,8 @@ def other():
 
     ##
 
-    file_1 = open('/home/nlp/file_1.txt', 'w')
-    file_2 = open('/home/nlp/file_2.txt', 'w')
+    file_1 = open('/home/nlp/file_tokenize.txt', 'w')
+    file_2 = open('/home/nlp/file_tokenSelector.txt', 'w')
 
     i = 0
 
@@ -59,4 +59,4 @@ def other():
 if __name__ == '__main__':
 
     # main()
-    other()
+    separate_files()
