@@ -33,6 +33,7 @@ def other():
     lines = file.readlines()
 
     print(lines[0])
+    print(len(lines))
 
 
 if __name__ == '__main__':
