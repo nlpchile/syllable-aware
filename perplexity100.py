@@ -18,11 +18,23 @@ def main():
     ppl = checkmodel.perplexity(path_test)
     print("perplexity per word was '{}'".format(ppl))
 
+
+def other():
+
+
+    # ls ~/ribanez/models >> ~/models_IDs.txt
+    # cat ~/models_IDs.txt
+
+    # ls ~/ribanez/models/experiment >> ~/experiments_IDs.txt
+    # cat ~/experiments_IDs.txt
+
+    file = open('~/experiments_IDs.txt', 'r')
+    lines = file.readlines()
+
+    print(lines[0])
+
+
 if __name__ == '__main__':
-    main()
 
-# ls ~/ribanez/models >> ~/models_IDs.txt
-# cat ~/models_IDs.txt
-
-# ls ~/ribanez/models/experiment >> ~/experiments_IDs.txt
-# cat ~/experiments_IDs.txt
+    # main()
+    other()
