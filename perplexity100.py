@@ -29,7 +29,7 @@ def other():
     # ls ~/ribanez/models/experiment >> ~/experiments_IDs.txt
     # cat ~/experiments_IDs.txt
 
-    file = open('~/experiments_IDs.txt', 'r')
+    file = open('/home/nlp/experiments_IDs.txt', 'r')
     lines = file.readlines()
 
     print(lines[0])
