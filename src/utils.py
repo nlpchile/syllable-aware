@@ -51,8 +51,8 @@ def preprocessing_file(path_in, path_out, to_ignore, punctuation, token_unknow):
     if not os.path.exists(path_in):
         raise TypeError("File not exists {0}".format(path_in))
 
-    with open(path_out, 'w') as f1:
-        with open(path_in) as f2:
+    with open(path_out, 'w', encoding='utf-8') as f1:
+        with open(path_in, encoding='utf-8') as f2:
 
             for line in f2:
                 words = line.lower().split()
@@ -176,7 +176,7 @@ def tokenize_corpus(path_file,
     dict_syll = dict()
     freq_word = dict()
 
-    with open(path_file, 'r') as f1:
+    with open(path_file, 'r', encoding='utf-8') as f1:
 
         for line in f1:
             words = line.lower().split()
