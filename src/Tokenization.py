@@ -88,7 +88,7 @@ class Tokenization:
         if os.path.exists(path=path_to_file):
             Warning(FileExistsError, "Warning path exists, '{}'".format(path_to_file))
 
-        with open(path_to_file, "w") as f:
+        with open(path_to_file, "w", encoding='utf-8') as f:
             json.dump(params, f)
 
     def load_tokenSelector(self, path_to_file):
@@ -96,7 +96,7 @@ class Tokenization:
         if not os.path.exists(path=path_to_file):
             raise FileNotFoundError("Path doesn't exists, '{}'".format(path_to_file))
 
-        with open(path_to_file) as f:
+        with open(path_to_file, encoding='utf-8') as f:
             params = json.load(f)
 
         self.tokenSelector.set_params(params)
@@ -111,7 +111,7 @@ class Tokenization:
 
         token_selected = []
 
-        with open(path_to_file) as f1:
+        with open(path_to_file, encoding='utf-8') as f1:
 
             for line in f1:
                 words = line.lower().split()
@@ -183,14 +183,14 @@ class Tokenization:
         if os.path.exists(path=path_to_file):
             Warning("Warning path exists, '{}'".format(path_to_file))
 
-        with open(path_to_file, "w") as f:
+        with open(path_to_file, "w", encoding='utf-8') as f:
             json.dump(params, f)
 
     def load_experiment(self, path_to_file):
         if not os.path.exists(path=path_to_file):
             raise FileNotFoundError("Path doesn't exists, '{}'".format(path_to_file))
 
-        with open(path_to_file) as f:
+        with open(path_to_file, encoding='utf-8') as f:
             params = json.load(f)
 
         self.set_params_experiment(params)
@@ -272,7 +272,7 @@ class Tokenization:
         """
 
         count = [0, 0, 0, 0]
-        with open(path_to_file) as f1:
+        with open(path_to_file, encoding='utf-8') as f1:
 
             for line in f1:
                 words = line.lower().split()
